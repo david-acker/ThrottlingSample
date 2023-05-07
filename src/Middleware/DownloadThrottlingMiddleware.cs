@@ -3,7 +3,6 @@
 public sealed class DownloadThrottlingMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly int _maxBytesPerSecond = 100_000;
 
     public DownloadThrottlingMiddleware(RequestDelegate next)
     {
@@ -12,20 +11,40 @@ public sealed class DownloadThrottlingMiddleware
         _next = next;
     }
 
-    public async Task Invoke(HttpContext context)
+    public Task Invoke(HttpContext context)
+    {
+        var throttleDownloadMetadata = 
+            context.GetEndpoint()?.Metadata?.GetMetadata<IThrottleDownloadMetadata>();
+
+        if (throttleDownloadMetadata?.MaxBytesPerSecond is not int maxBytesPerSecond)
+        {
+            return _next(context);
+        }
+
+        return InvokeCore(context, maxBytesPerSecond);
+    }
+
+    private async Task InvokeCore(HttpContext context, int maxBytesPerSecond)
     {
         var originalBody = context.Response.Body;
-        var throttledBody = new ThrottledStream(originalBody, _maxBytesPerSecond);
+
+        ThrottledStream? throttledBody = null;
 
         try
         {
+            throttledBody = new ThrottledStream(originalBody, maxBytesPerSecond);
             context.Response.Body = throttledBody;
+
             await _next(context);
         }
         finally
         {
             context.Request.Body = originalBody;
-            await throttledBody.DisposeAsync();
+
+            if (throttledBody is not null)
+            {
+                await throttledBody.DisposeAsync();
+            }
         }
     }
 }

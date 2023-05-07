@@ -14,5 +14,5 @@ The sample project is currently setup to limit the download speed to 100,000 byt
 
 ## Future Enhancements
 
-- Allow the download rate limit to be configured via `appsettings.json`.
-- Allow for granular download throttling by adding a `ThrottleDownloadAttribute`, along with the desired download rate limit, to specific endpoints or controllers.
+- [ ] Allow the download rate limit to be configured via `appsettings.json`.
+- [x] Allow for granular download throttling by adding a `ThrottleDownloadAttribute`, along with the desired download rate limit, to specific endpoints or controllers.
