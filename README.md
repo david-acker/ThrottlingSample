@@ -16,7 +16,7 @@ Enables download throttling for the target controllers or endpoints.
 
 ```csharp
 [EnableDownloadThrottling(2_000_000)]
-public IActionResult GetWithThrottling()
+public async Task<IActionResult> GetWithThrottling()
 ```
 
 <hr>
@@ -31,7 +31,7 @@ Disables download throttling for the target controllers or endpoints.
 
 ```csharp
 [DisableDownloadThrottling()]
-public IActionResult GetWithoutThrottling()
+public async Task<IActionResult> GetWithoutThrottling()
 ```
 
 <hr>
