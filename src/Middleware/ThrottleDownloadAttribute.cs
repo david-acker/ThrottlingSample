@@ -1,6 +1,6 @@
 ﻿namespace ThrottlingSample.Middleware;
 
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public sealed class ThrottleDownloadAttribute : Attribute, IThrottleDownloadMetadata
 {
     private readonly int _bytes;

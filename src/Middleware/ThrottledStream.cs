@@ -73,7 +73,7 @@ public sealed class ThrottledStream : Stream
     }
 
     public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
-    {
+{
         int start = offset;
         int remainingBytes = count;
 
@@ -105,21 +105,22 @@ public sealed class ThrottledStream : Stream
             remainingBytes -= newBytesWritten;
         }
     }
-
+    
     private async Task ThrottleAsync(int newBytesWritten, CancellationToken cancellationToken = default)
     {
         _bytesWritten += newBytesWritten;
 
         var elapsed = DateTime.UtcNow - _lastWriteTime;
+        var bytesPerSecond = _bytesWritten / elapsed.TotalSeconds;
 
-        if (_bytesWritten >= _maxBytesPerSecond && elapsed < TimeSpan.FromSeconds(1))
+        if (bytesPerSecond >= _maxBytesPerSecond)
         {
-            int delayMilliseconds = (int)(1000 - elapsed.TotalSeconds);
+            int delayMilliseconds = (int)(1_000 - elapsed.TotalMilliseconds);
             await Task.Delay(delayMilliseconds, cancellationToken);
-
-            _bytesWritten = 0;
-            _lastWriteTime = DateTime.UtcNow;
         }
+
+        _bytesWritten = 0;
+        _lastWriteTime = DateTime.UtcNow;
     }
 
     private void Throttle(int newBytesWritten)
@@ -127,14 +128,15 @@ public sealed class ThrottledStream : Stream
         _bytesWritten += newBytesWritten;
 
         var elapsed = DateTime.UtcNow - _lastWriteTime;
+        var bytesPerSecond = _bytesWritten / elapsed.TotalSeconds;
 
-        if (_bytesWritten >= _maxBytesPerSecond && elapsed < TimeSpan.FromSeconds(1))
+        if (bytesPerSecond >= _maxBytesPerSecond)
         {
-            int delayMilliseconds = (int)(1000 - elapsed.TotalSeconds);
+            int delayMilliseconds = (int)(1_000 - elapsed.TotalMilliseconds);
             Thread.Sleep(delayMilliseconds);
-
-            _bytesWritten = 0;
-            _lastWriteTime = DateTime.UtcNow;
         }
+
+        _bytesWritten = 0;
+        _lastWriteTime = DateTime.UtcNow;
     }
 }
