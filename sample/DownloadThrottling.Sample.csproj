@@ -4,9 +4,11 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
 	  <ImplicitUsings>enable</ImplicitUsings>
-	  <RootNamespace>ThrottlingSample</RootNamespace>
-    <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../src/DownloadThrottling.csproj" />
+  </ItemGroup>
 	
   <ItemGroup>
     <None Update="test-data.csv">

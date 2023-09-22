@@ -1,4 +1,6 @@
-﻿namespace ThrottlingSample.Middleware;
+﻿using Microsoft.AspNetCore.Builder;
+
+namespace DownloadThrottling;
 
 /// <summary>
 /// Extension methods for the download throttling middleware.

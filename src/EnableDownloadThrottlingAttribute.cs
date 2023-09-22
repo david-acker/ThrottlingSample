@@ -1,18 +1,18 @@
-﻿namespace ThrottlingSample.Middleware;
+﻿namespace DownloadThrottling;
 
 /// <summary>
-/// Sets the maximum allowed download speed to the specified bytes per second.
+/// Metadata that enables download throttling for an endpoint.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public sealed class ThrottleDownloadAttribute : Attribute, IThrottleDownloadMetadata
+public sealed class EnableDownloadThrottlingAttribute : Attribute, IDownloadThrottlingMetadata
 {
     private readonly int _bytesPerSecond;
 
     /// <summary>
-    /// Creates a new instance of <see cref="ThrottleDownloadAttribute"/>.
+    /// Creates a new instance of <see cref="EnableDownloadThrottlingAttribute"/>.
     /// </summary>
     /// <param name="bytesPerSecond">The maximum download speed.</param>
-    public ThrottleDownloadAttribute(int bytesPerSecond)
+    public EnableDownloadThrottlingAttribute(int bytesPerSecond)
     {
         if (bytesPerSecond <= 0)
         {
@@ -23,5 +23,5 @@ public sealed class ThrottleDownloadAttribute : Attribute, IThrottleDownloadMeta
     }
 
     /// <inheritdoc />
-    int? IThrottleDownloadMetadata.MaxBytesPerSecond => _bytesPerSecond;
+    int? IDownloadThrottlingMetadata.MaxBytesPerSecond => _bytesPerSecond;
 }

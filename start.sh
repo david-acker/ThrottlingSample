@@ -1,3 +1,3 @@
 #!/bin/bash
 
-dotnet run --project src/ThrottlingSample.csproj
+dotnet run --project sample/DownloadThrottling.Sample.csproj
