@@ -96,4 +96,5 @@ Not Throttled:
 
 ## Future Enhancements
 
+- [ ] Add tests for the `DownloadThrottling` project.
 - [ ] Allow the download rate limits to be configured via `appsettings.json`.
