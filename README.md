@@ -2,6 +2,23 @@
 
 Middleware for throttling download speeds in ASP.NET Core applications
 
+## Table of Contents
+
+<!--ts-->
+   * [Documentation](#documentation)
+      * [EnableDownloadThrottingAttribute](#enabledownloadthrottingattribute)
+      * [DisasbleDownloadThrottingAttribute](#disabledownloadthrottingattribute)
+      * [UseDownloadThrottling](#usedownloadthrottling)
+   * [Sample Application](#sample-application)
+      * [Setup](#setup)
+      * [Usage](#usage)
+         * [Testing](#testing)  
+      * [Endpoints](#endpoints)
+         * [Minimal](#minimal)
+         * [Controller](#controller)
+   * [Future Enhancements](#future-enhancements)
+<!--te-->
+
 ## Documentation
 
 ### EnableDownloadThrottingAttribute
@@ -77,7 +94,7 @@ This test script uses `curl` to make several requests to the sample application'
 
 The sample includes the following endpoints, all of which return the sample CSV file included with the project.
 
-#### Minimal Endpoints
+#### Minimal
 
 Throttled:
   - `GET /minimal/throttled`: limited to 0.1 MBs per second
@@ -85,7 +102,7 @@ Throttled:
 Not Throttled:
   - `GET /minimal/not-throttled`
 
-#### Controller Endpoints
+#### Controller
 
 Throttled:
   - `GET /controller/throttled`: limited to 0.1 MBs per second
