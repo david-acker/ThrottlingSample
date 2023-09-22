@@ -1,5 +1,13 @@
 # ASP.NET Core Download Throttling Sample
 
+## Setup
+
+Add execute permissions for `start.sh` and `client-test.sh`:
+
+```bash
+chmod +x start.sh client-test.sh
+```
+
 ## Running
 
 Run `./start.sh` to start the ASP.NET Core sample application. The sample application uses the download throttling middleware and has a single endpoint (`GET /`) which returns a test CSV file included with the project.

@@ -1,14 +1,19 @@
 ﻿namespace ThrottlingSample.Middleware;
 
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public sealed class ThrottleDownloadAttribute : Attribute, IThrottleDownloadMetadata
 {
-    private readonly int _bytes;
+    private readonly int _maxBytesPerSecond;
 
-    public ThrottleDownloadAttribute(int bytes)
+    public ThrottleDownloadAttribute(int maxBytesPerSecond)
     {
-        _bytes = bytes;
+        if (maxBytesPerSecond <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(maxBytesPerSecond), maxBytesPerSecond, "The maximum bytes per second must be greater than zero.");
+        }
+           
+        _maxBytesPerSecond = maxBytesPerSecond;
     }
 
-    int? IThrottleDownloadMetadata.MaxBytesPerSecond => _bytes;
+    int? IThrottleDownloadMetadata.MaxBytesPerSecond => _maxBytesPerSecond;
 }
