@@ -1,4 +1,6 @@
-﻿namespace ThrottlingSample.Middleware;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace DownloadThrottling;
 
 /// <summary>
 /// Enables download throttling for requests.
@@ -25,21 +27,17 @@ internal sealed class DownloadThrottlingMiddleware
     /// <returns>A task that represents the execution of this middleware.</returns>
     public Task Invoke(HttpContext context)
     {
-        var throttleDownloadMetadata = 
-            context.GetEndpoint()?.Metadata?.GetMetadata<IThrottleDownloadMetadata>();
-
-        if (throttleDownloadMetadata?.MaxBytesPerSecond is not int maxBytesPerSecond)
-        {
-            return _next(context);
-        }
-
-        return InvokeCore(context, maxBytesPerSecond);
+        var downloadThrottlingMetadata = 
+            context.GetEndpoint()?.Metadata?.GetMetadata<IDownloadThrottlingMetadata>();
+        
+        return downloadThrottlingMetadata?.MaxBytesPerSecond is not { } maxBytesPerSecond 
+            ? _next(context) 
+            : InvokeCore(context, maxBytesPerSecond);
     }
 
     private async Task InvokeCore(HttpContext context, int maxBytesPerSecond)
     {
         var originalBody = context.Response.Body;
-
         ThrottledStream? throttledBody = null;
 
         try

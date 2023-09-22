@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ThrottlingSample.Middleware;
+using DownloadThrottling;
 
-namespace ThrottlingSample.Controllers;
+namespace DownloadThrottling.Sample.Controllers;
 
 [ApiController]
-[Route("api")]
-[ThrottleDownload(1_000_000)]
-public sealed class TestController : ControllerBase
+[Route("controller")]
+[EnableDownloadThrottling(1_000_000)]
+public sealed class SampleController : ControllerBase
 {
     private readonly byte[] _data;
 
-    public TestController()
+    public SampleController()
     {
         _data = System.IO.File.ReadAllBytes("test-data.csv");
     }
@@ -21,15 +21,15 @@ public sealed class TestController : ControllerBase
         return File(_data, contentType: "text/csv", fileDownloadName: "test-data.csv");
     }
 
-    [HttpGet("throttled-differently")]
-    [ThrottleDownload(2_000_000)]
+    [HttpGet("throttled-override")]
+    [EnableDownloadThrottling(2_000_000)]
     public IActionResult GetWithDifferentThrottling()
     {
         return File(_data, contentType: "text/csv", fileDownloadName: "test-data.csv");
     }
     
     [HttpGet("not-throttled")]
-    [DisableThrottleDownload]
+    [DisableDownloadThrottling]
     public IActionResult GetWithoutThrottling()
     {
         return File(_data, contentType: "text/csv", fileDownloadName: "test-data.csv");

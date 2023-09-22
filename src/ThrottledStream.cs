@@ -1,4 +1,4 @@
-﻿namespace ThrottlingSample.Middleware;
+﻿namespace DownloadThrottling;
 
 internal sealed class ThrottledStream : Stream
 {
@@ -40,8 +40,8 @@ internal sealed class ThrottledStream : Stream
 
     public override void Write(byte[] buffer, int offset, int count)
     {
-        int start = offset;
-        int remainingBytes = count;
+        var start = offset;
+        var remainingBytes = count;
 
         while (remainingBytes > 0)
         {
@@ -57,8 +57,8 @@ internal sealed class ThrottledStream : Stream
 
     public override void Write(ReadOnlySpan<byte> buffer)
     {
-        int start = 0;
-        int remainingBytes = buffer.Length;
+        var start = 0;
+        var remainingBytes = buffer.Length;
 
         while (remainingBytes > 0)
         {
@@ -73,16 +73,16 @@ internal sealed class ThrottledStream : Stream
     }
 
     public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
-{
-        int start = offset;
-        int remainingBytes = count;
+    {
+        var start = offset;
+        var remainingBytes = count;
 
         while (remainingBytes > 0)
         {
             var newBytesWritten = Math.Min(remainingBytes, _maxBytesPerSecond);
 
             await ThrottleAsync(newBytesWritten, cancellationToken);
-            await _innerStream.WriteAsync(buffer, start, newBytesWritten);
+            await _innerStream.WriteAsync(buffer.AsMemory(start, newBytesWritten), cancellationToken);
 
             start += newBytesWritten;
             remainingBytes -= newBytesWritten;
@@ -91,8 +91,8 @@ internal sealed class ThrottledStream : Stream
 
     public override async ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
     {
-        int start = 0;
-        int remainingBytes = buffer.Length;
+        var start = 0;
+        var remainingBytes = buffer.Length;
 
         while (remainingBytes > 0)
         {
@@ -115,7 +115,7 @@ internal sealed class ThrottledStream : Stream
 
         if (bytesPerSecond >= _maxBytesPerSecond)
         {
-            int delayMilliseconds = (int)(1_000 - elapsed.TotalMilliseconds);
+            var delayMilliseconds = (int)(1_000 - elapsed.TotalMilliseconds);
             await Task.Delay(delayMilliseconds, cancellationToken);
         }
 
@@ -132,7 +132,7 @@ internal sealed class ThrottledStream : Stream
 
         if (bytesPerSecond >= _maxBytesPerSecond)
         {
-            int delayMilliseconds = (int)(1_000 - elapsed.TotalMilliseconds);
+            var delayMilliseconds = (int)(1_000 - elapsed.TotalMilliseconds);
             Thread.Sleep(delayMilliseconds);
         }
 

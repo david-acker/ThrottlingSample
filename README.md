@@ -2,7 +2,7 @@
 
 ## Setup
 
-Add execute permissions for `start.sh` and `client-test.sh`:
+Add execute permissions for `start.sh` and `client-test.sh` scripts:
 
 ```bash
 chmod +x start.sh client-test.sh
@@ -10,15 +10,28 @@ chmod +x start.sh client-test.sh
 
 ## Running
 
-Run `./start.sh` to start the ASP.NET Core sample application. The sample application uses the download throttling middleware and has a single endpoint (`GET /`) which returns a test CSV file included with the project.
+Run `./start.sh` to start the ASP.NET Core sample application. The sample includes the following endpoints, all of which return the sample CSV file included with the project:
+
+### Minimal Endpoints
+
+- Throttled:
+  - `GET /minimal/throttled`: limited to 0.1 MBs per second
+- Not Throttled:
+  - `GET /minimal/not-throttled`
+
+### Controller Endpoints
+
+- Throttled:
+  - `GET /controller/throttled`: limited to 0.1 MBs per second
+  - `GET /controller/throttled-override`: limited to 0.2 MBs per second
+- Not Throttled:
+  - `GET /controller/not-throttled`
 
 ## Testing
 
-Run `./client-test.sh` to test the download throttling functionality. The script makes several requests to the sample application using `curl` and prints the average download speed (in bytes per second) when each request completes.
+Run `./client-test.sh` to test the download throttling functionality. The script makes several requests to the sample application's `GET /minimal/throttled` using `curl` and prints the average download speed (in bytes per second) when each request completes.
 
-## Metrics
-
-The sample project is currently setup to limit the download speed to 100,000 bytes (0.1 MB) per second. Using the `./client-test.sh` script, the throttled download speeds average roughly 99,000 bytes (0.099 MB) per second and do not exceed the enforced limit of 0.1 MBs per second.
+The actual download speeds average 99,000 bytes (0.099 MBs) per second and do not exceed the enforced limit of 0.1 MBs per second.
 
 ## Future Enhancements
 

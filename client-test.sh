@@ -1,6 +1,6 @@
 #!/bin/bash
 
-url='http://localhost:5000/'
+url='http://localhost:5000/minimal/throttled'
 
 for i in {1..10}
 do
