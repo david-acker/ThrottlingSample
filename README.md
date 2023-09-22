@@ -1,5 +1,64 @@
 # ASP.NET Core Download Throttling Sample
 
+Adds middleware for throttling download speeds.
+
+## Usage
+
+### `EnableDownloadThrottingAttribute`
+
+**Parameters:**
+
+- `bytesPerSecond` (_int_): The maximum allowed download speed in bytes per second.
+
+**Effect**: Enables download throttling.
+
+**Target**: Applied to individual endpoints or controllers.
+
+**Example:**
+
+```csharp
+[EnableDownloadThrottling(2_000_000)]
+public IActionResult GetWithThrottling()
+...
+```
+
+<hr>
+
+### `DisableDownloadThrottingAttribute`
+
+**Parameters:** None
+
+**Effect**: Disables download throttling.
+
+**Target**: Applied to individual endpoints or controllers.
+
+**Example:**
+
+```csharp
+[DisableDownloadThrottling()]
+public IActionResult GetWithoutThrottling()
+...
+```
+
+<hr>
+
+### `UseDownloadThrottling`
+
+**Parameters:**
+
+- `builder` (_IApplicationBuilder_)
+
+**Effect**: Adds middleware for throttling download speeds.
+
+**Example:**
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+var app = builder.Build();
+app.UseDownloadThrottling();
+```
+
 ## Setup
 
 Add execute permissions for `start.sh` and `client-test.sh` scripts:
@@ -35,5 +94,4 @@ The actual download speeds average 99,000 bytes (0.099 MBs) per second and do no
 
 ## Future Enhancements
 
-- [ ] Allow the download rate limit to be configured via `appsettings.json`.
-- [x] Allow for granular download throttling by adding a `ThrottleDownloadAttribute`, along with the desired download rate limit, to specific endpoints or controllers.
+- [ ] Allow the download rate limits to be configured via `appsettings.json`.
