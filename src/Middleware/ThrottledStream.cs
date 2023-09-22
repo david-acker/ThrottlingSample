@@ -1,6 +1,6 @@
 ﻿namespace ThrottlingSample.Middleware;
 
-public sealed class ThrottledStream : Stream
+internal sealed class ThrottledStream : Stream
 {
     private readonly Stream _innerStream;
     private readonly int _maxBytesPerSecond;
