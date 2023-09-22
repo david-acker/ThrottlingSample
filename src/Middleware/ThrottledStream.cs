@@ -3,16 +3,16 @@
 public sealed class ThrottledStream : Stream
 {
     private readonly Stream _innerStream;
+    private readonly int _maxBytesPerSecond;
 
     private long _bytesWritten;
-    private int _maxBytesPerSecond;
     private DateTime _lastWriteTime;
 
     public ThrottledStream(Stream innerStream, int maxBytesPerSecond)
     {
         _innerStream = innerStream;
-
         _maxBytesPerSecond = maxBytesPerSecond;
+
         _lastWriteTime = DateTime.UtcNow;
     }
 
