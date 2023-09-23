@@ -5,7 +5,7 @@ namespace DownloadThrottling;
 /// <summary>
 /// Extension methods for the download throttling middleware.
 /// </summary>
-public static class DownloadThrottlingMiddlewareExtensions
+public static class DownloadThrottlingBuilderExtensions
 {
     /// <summary>
     /// Adds middleware for throttling download speeds.
