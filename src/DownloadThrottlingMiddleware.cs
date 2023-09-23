@@ -49,7 +49,7 @@ internal sealed class DownloadThrottlingMiddleware
         }
         finally
         {
-            context.Request.Body = originalBody;
+            context.Response.Body = originalBody;
 
             if (throttledBody is not null)
             {
