@@ -4,8 +4,6 @@ Middleware for throttling download speeds in ASP.NET Core applications
 
 ## Table of Contents
 
-<!--ts-->
-
 - [Documentation](#documentation)
   - [EnableDownloadThrottingAttribute](#enabledownloadthrottingattribute)
   - [DisasbleDownloadThrottingAttribute](#disabledownloadthrottingattribute)
@@ -17,7 +15,6 @@ Middleware for throttling download speeds in ASP.NET Core applications
     - [Minimal](#minimal)
     - [Controller](#controller)
 - [Future Enhancements](#future-enhancements)
-<!--te-->
 
 ## Documentation
 
@@ -47,7 +44,7 @@ Disables download throttling for the target controllers or endpoints.
 **Example:**
 
 ```csharp
-[DisableDownloadThrottling()]
+[DisableDownloadThrottling]
 public async Task<IActionResult> GetWithoutThrottling()
 ```
 
@@ -80,7 +77,7 @@ Navigate to the `sample` directory and run `dotnet run` to start the sample appl
 
 Optionally, run `./client-test.sh` to test the download throttling functionality, after starting the sample application. If necessary, add execute permissions using `chmod +x client-test.sh`.
 
-The test script uses `curl` to make several requests to the sample application's `GET /minimal/throttled` and prints the average download speed of each request (in bytes per second) to the console. The actual download speeds average 99,000 bytes (0.099 MBs) per second, and do not exceed the enforced limit of 0.1 MBs per second.
+The test script uses `curl` to make several requests to the `GET /minimal/throttled` endpoint and prints the average download speed of each request (in bytes per second) to the console. The actual download speeds average 99,000 bytes (0.099 MBs) per second, and do not exceed the enforced limit of 0.1 MBs per second.
 
 ### Endpoints
 

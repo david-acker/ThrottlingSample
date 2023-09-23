@@ -38,23 +38,17 @@ internal sealed class DownloadThrottlingMiddleware
     private async Task InvokeCore(HttpContext context, int maxBytesPerSecond)
     {
         var originalBody = context.Response.Body;
-        ThrottledStream? throttledBody = null;
+        var throttledBody = new ThrottledStream(originalBody, maxBytesPerSecond);
 
         try
         {
-            throttledBody = new ThrottledStream(originalBody, maxBytesPerSecond);
-            
             context.Response.Body = throttledBody;
             await _next(context);
         }
         finally
         {
             context.Response.Body = originalBody;
-
-            if (throttledBody is not null)
-            {
-                await throttledBody.DisposeAsync();
-            }
+            await throttledBody.DisposeAsync();
         }
     }
 }

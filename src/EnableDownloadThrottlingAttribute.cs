@@ -1,7 +1,7 @@
 ﻿namespace DownloadThrottling;
 
 /// <summary>
-/// Metadata that enables download throttling for an endpoint.
+/// Metadata that enables download throttling for a controller or endpoint.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public sealed class EnableDownloadThrottlingAttribute : Attribute, IDownloadThrottlingMetadata
